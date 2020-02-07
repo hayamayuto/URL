@@ -1,0 +1,24 @@
+<!DOCTYPE.html>
+<html lang="ja">
+<meta charset="UTF-8">
+<head>
+    <title>URL自動認識</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="ocrad.js"></script>
+    </head>
+    <style>
+    .format {
+    padding: 0.5em;
+    color: #494949;
+    background: #fffaf4;
+    border-left: solid 5px #ffaf58;
+    }
+    </style>
+    <body>
+    <div><div class="format">URL自動認識</div></div>
+    画像からURLを自動認識してウェブサイトを開きます。<br>
+    <script>
+    </script>
+</body>
+</html>
