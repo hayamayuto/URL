@@ -16,110 +16,13 @@
   </head>
   <body>
     <div><div class="format">URL自動認識</div></div>
-    画像からURLを自動認識してウェブサイトを開きます。<br>
-    <div class="upload"><input type="file" id="file"></div><br>
-    <div class = "output">
-      <div id = "output">
-        <div id="text"></div>
-        <div id="timing"></div>
-      </div>
+    画像からURLを自動認識して表示します。<br>
+    <div class="upload"><input type="file" id="file"></div>
+    <div id="timing"></div>
+    <div id="URL"></div>
     </div>
     <canvas id="canvas"></canvas>
     <div id ="status"></div>
-    <script>
-      var file = document.getElementById("file");
-      var canvas = document.getElementById("canvas");
-      var uploadImgSrc;
-      var ctx = canvas.getContext("2d");
-      let string;
-
-      window.onload = clearCanvas();
-
-      if(window.File && window.FileReader && window.FileList && window.Blob){
-        function loadLocalImage(e) {
-          var fileData = e.target.files[0];
-          if(fileData.type.match("image.*")) {
-            var reader = new FileReader();
-            var ext = file.name.split(".").slice(-1)[0];
-            if(fileData.type == "image/x-portable-bitmap" || ext == "pbm" || ext == "pgm" || ext == "pnm" || ext == "ppm"){
-              reader.onload = function(){
-                clearCanvas();
-                document.getElementById("status").innerHTML = "このファイル形式はプレビューを表示することができません。"
-                console.log("no previews for NetPBM format");
-                runOCR(new Uint8Array(reader.result), true);
-              }
-              reader.readAsArrayBuffer(file);
-            }else{
-              reader.onload = function() {
-                clearCanvas();
-                var img = new Image();
-                img.src = reader.result;
-                img.onerror = function(){
-                  clearCanvas();
-    						  alert("エラー：無効な画像です。")
-                  console.log("Error: Invalied Image" + fileData.name);
-    						}
-                drawFrame();
-                ctx.drawImage(img, 0, 0);
-                runOCR(img, true)
-              }
-              file.value = "";
-            }
-          }else{
-            alert("画像ファイルを選択してください。")
-            console.log("Error: Non-Image File not supported");
-            file.value = "";
-            return;
-          }
-          reader.readAsDataURL(fileData);
-        }
-      }else{
-        file.style.display = "none";
-        alert("APIに対応したブラウザで試してみてください。")
-        console.log("Error: API not supported")
-      }
-      file.addEventListener("change", loadLocalImage, false);
-
-      function drawFrame(){
-        ctx.rect(0,0,canvas.width,canvas.height);
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-
-      function clearCanvas(){
-        canvas.width = 0;
-        canvas.height = 0;
-        console.log("canvas cleared")
-      }
-
-      var lastWorker;
-			var worker = new Worker('worker.js')
-			function runOCR(image_data, raw_feed){
-				document.getElementById("output").className = 'processing'
-				worker.onmessage = function(e){
-
-					document.getElementById("output").className = ''
-
-					if('innerText' in document.getElementById("text")){
-						document.getElementById("text").innerText = e.data
-					}else{
-						document.getElementById("text").textContent = e.data
-					}
-					document.getElementById('timing').innerHTML = 'recognition took ' + ((Date.now() - start)/1000).toFixed(2) + 's';
-				}
-				var start = Date.now()
-				if(!raw_feed){
-					image_data = o.getImageData(0, 0, c.width, c.height);
-				}
-
-				worker.postMessage(image_data)
-				lastWorker = worker;
-			}
-
-      function test() {
-        alert("a");
-      }
-    </script>
+    <script src="URL.js"></script>
   </body>
 </html>
