@@ -2,28 +2,30 @@ var file = document.getElementById("file");
 var canvas = document.getElementById("canvas");
 var uploadImgSrc;
 var ctx = canvas.getContext("2d");
-let string;
+let string = [];
 var StartTime;
 var EndTime;
 
-function clearCanvas() {
+function clearOutputs() {
   canvas.width = 0;
   canvas.height = 0;
   console.log("canvas cleared");
+  document.getElementById("timing").innerHTML = "";
+  document.getElementById("URL").innerHTML = "";
+  document.getElementById("status").innerHTML = "";
 }
 
-window.onload = clearCanvas();
+window.onload = clearOutputs();
 
 if(window.File && window.FileReader && window.FileList && window.Blob){
   function loadLocalImage(e) {
     var fileData = e.target.files[0];
     var ext = fileData.name.split(".").slice(-1)[0];
     var reader = new FileReader();
-    console.log(ext);
+    clearOutputs();
     if(fileData.type == "image/x-portable-bitmap" || ext == "pbm" || ext == "pgm" || ext == "pnm" || ext == "ppm"){
       getStartTime();
       reader.onload = function() {
-        clearCanvas();
         document.getElementById("status").innerHTML = "このファイル形式はプレビューを表示することができません。"
         console.log("no previews for NetPBM format");
         var img = new Uint8Array(reader.result);
@@ -34,14 +36,14 @@ if(window.File && window.FileReader && window.FileList && window.Blob){
     }else if(fileData.type.match("image.*")){
       getStartTime();
       reader.onload = function() {
-        clearCanvas();
         var img = new Image();
         img.src = reader.result;
         img.onerror = function() {
-          clearCanvas();
-                                alert("エラー：無効な画像です。");
+          clearOutputs();
           console.log("Error: Invalied Image" + fileData.name);
-                              }
+          alert("エラー：無効な画像です。");
+          document.getElementById("status").innerHTML = "エラーが発生しました。";
+        }
         img.onload = function() {
           canvas.width = img.naturalWidth;
           canvas.height = img.naturalHeight;
@@ -56,16 +58,16 @@ if(window.File && window.FileReader && window.FileList && window.Blob){
       }
       reader.readAsDataURL(fileData);
     }else{
-      alert("画像ファイルを選択してください。")
       console.log("Error: Non-Image File");
+      alert("画像ファイルを選択してください。");
       document.getElementById("status").innerHTML = "アップロードされたファイルは画像ではありません";
       return;
     }
   }
 }else{
   file.style.display = "none";
-  alert("APIに対応したブラウザで試してみてください。");
   console.log("Error: File APIs not supported");
+  alert("APIに対応したブラウザで試してみてください。");
 }
 file.addEventListener("change", loadLocalImage, false);
 
@@ -88,12 +90,14 @@ function getURL(img) {
   string = string.replace(/　/, "");
   string = string.replace(/\r?\n/g, '');
   string = (string.match(/((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#'()*!]+))/g));
-  if(string = "null"){
-    document.getElementById("URL").innerHTML = "画像からURLを認識できませんでした。"
+  if(string === null){
+    console.log("unable to recognise URLs from the image");
+    document.getElementById("URL").innerHTML = "画像からURLを認識できませんでした。";
     document.getElementById("URL").style.color = "red";
   }else{
+    console.log("URLs have been recognised successfully: " + string);
     for(var i = 0; i < string.length; i++){
-      document.getElementById("URL").innerHTML += i + 1 + ". " + "<a href=string[i]>" + string[i] + "</a><br>";
+      document.getElementById("URL").innerHTML += "No. " + (i+1) + ": " + "<a href=string[i]>" + string[i] + "</a><br>";
     }
   }
 }
