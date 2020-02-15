@@ -9,10 +9,10 @@ var EndTime;
 function clearOutputs() {
   canvas.width = 0;
   canvas.height = 0;
-  console.log("canvas cleared");
   document.getElementById("timing").innerHTML = "";
   document.getElementById("URL").innerHTML = "";
   document.getElementById("status").innerHTML = "";
+  console.log("outputs cleared");
 }
 
 window.onload = clearOutputs();
