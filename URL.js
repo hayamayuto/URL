@@ -86,7 +86,7 @@ function getEndTime() {
 function getURL(img) {
         Tesseract.recognize(img)
         .progress(function(message){
-           document.getElementById('timing').innerHTML = "処理中...完了まで"　+ Math.round(message.progress*1000)/10 + "％";
+           document.getElementById('timing').innerHTML = "処理中..."　+ Math.round(message.progress*1000)/10 + "％完了";
            console.log(message);
         })
         .then(function(result){
