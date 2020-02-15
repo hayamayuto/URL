@@ -65,8 +65,7 @@ if(window.File && window.FileReader && window.FileList && window.Blob){
           .catch(function(err){
               console.error(err);
           })
-          .finally(getEndTime(StartTime);
-          );
+          .finally(getEndTime(StartTime));
         }
       }
       reader.readAsDataURL(fileData);
