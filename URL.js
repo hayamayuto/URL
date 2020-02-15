@@ -91,7 +91,7 @@ function getURL(img) {
         })
         .then(function(result){
           console.log("raw string: " + result);
-          string = result;
+          string = result.text;
           string = string.replace(/ /, "");
           string = string.replace(/　/, "");
           //string = string.replace(/\r?\n/g, '');
