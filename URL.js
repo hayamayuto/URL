@@ -53,19 +53,7 @@ if(window.File && window.FileReader && window.FileList && window.Blob){
           ctx.lineWidth = 1;
           ctx.stroke();
           Tesseract.recognize(img)
-          .progress(function(message){
-             document.getElementById('URL').innerHTML = "message.progress";
-             console.log(message);
-          })
-          .then(function(result){
-              var contentArea = document.getElementById('URL');
-              contentArea.innerHTML = result.text;
-              console.log(result);
-              getEndTime(StartTime)
-          })
-          .catch(function(err){
-              console.error(err);
-          })
+          getURL(img);
         }
       }
       reader.readAsDataURL(fileData);
@@ -96,20 +84,31 @@ function getEndTime() {
 }
 
 function getURL(img) {
-  string = OCRAD(img);
-  console.log("raw string: " + string);
-  string = string.replace(/ /, "");
-  string = string.replace(/　/, "");
-  string = string.replace(/\r?\n/g, '');
-  string = (string.match(/((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#'()*!]+))/g));
-  if(string === null){
-    console.log("unable to recognise URLs from the image");
-    document.getElementById("URL").innerHTML = "画像からURLを認識できませんでした。";
-    document.getElementById("URL").style.color = "red";
-  }else{
-    console.log("URLs have been recognised successfully: " + string);
-    for(var i = 0; i < string.length; i++){
-      document.getElementById("URL").innerHTML += "No. " + (i+1) + ": " + "<a href=string[i]>" + string[i] + "</a><br>";
-    }
-  }
-}
+        Tesseract.recognize(img)
+        .progress(function(message){
+           document.getElementById('timing').innerHTML = "処理中...完了まで"　+ Math.round(message.progress*1000)/10 + "％";
+           console.log(message);
+        })
+        .then(function(result){
+          console.log("raw string: " + result);
+          string = result;
+          string = string.replace(/ /, "");
+          string = string.replace(/　/, "");
+          //string = string.replace(/\r?\n/g, '');
+          string = (string.match(/((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#'()*!]+))/g));
+          if(string === null){
+            console.log("unable to recognise URLs from the image");
+            document.getElementById("URL").innerHTML = "画像からURLを認識できませんでした。";
+            document.getElementById("URL").style.color = "red";
+          }else{
+            console.log("URLs have been recognised successfully: " + string);
+            for(var i = 0; i < string.length; i++){
+              document.getElementById("URL").innerHTML += "No. " + (i+1) + ": " + "<a href=string[i]>" + string[i] + "</a><br>";
+            }
+          }
+            getEndTime(StartTime);
+          })
+          .catch(function(err){
+            console.error(err);
+          });
+        }
