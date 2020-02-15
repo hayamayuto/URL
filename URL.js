@@ -61,11 +61,11 @@ if(window.File && window.FileReader && window.FileList && window.Blob){
               var contentArea = document.getElementById('URL');
               contentArea.innerHTML = result.text;
               console.log(result);
+              getEndTime(StartTime)
           })
           .catch(function(err){
               console.error(err);
           })
-          .finally(getEndTime(StartTime));
         }
       }
       reader.readAsDataURL(fileData);
