@@ -90,8 +90,8 @@ function getURL(img) {
            console.log(message);
         })
         .then(function(result){
-          console.log("raw string: " + result.text);
           string = result.text;
+          console.log("raw string: " + string);
           string = string.replace(/ /, "");
           string = string.replace(/　/, "");
           //string = string.replace(/\r?\n/g, '');
