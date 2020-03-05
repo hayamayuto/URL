@@ -92,8 +92,6 @@ var file = document.getElementById("file");
           .then(function(result){
             string = result.text;
             console.log("raw string: " + string);
-            string = string.replace(/\s+/g, "");
-            console.log("edited string: " + string);
             string = (string.match(/((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#',()*!]+))/g));
             if(string === null){
               console.log("unable to recognise URLs from the image");
