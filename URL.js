@@ -100,7 +100,7 @@ var file = document.getElementById("file");
             }else{
               console.log("URLs have been recognised successfully: " + string);
               for(var i = 0; i < string.length; i++){
-                document.getElementById("URL").innerHTML += "No. " + (i+1) + ": " + "<a href=string[i]>" + string[i] + "</a><br>";
+                document.getElementById("URL").innerHTML += "No. " + (i+1) + ": " + "<a href="string[i]">" + string[i] + "</a><br>";
               }
             }
               getEndTime(StartTime);
